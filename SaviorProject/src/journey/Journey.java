@@ -8,44 +8,19 @@ public class Journey {
 
 	public ArrayList<String> writeToFileStringList = new ArrayList<>();
 
-
+	int heroRemainingHp;
+	boolean isSurvived = true;
+	int lastPosition = 0;
+	
 	public void startJourney(FileDescriptor fileDescriptor) {
-		boolean isSurvived = true;
-		int lastPosition = 0;
+		
 		
 		System.out.println("Hero started Journey with " + fileDescriptor.hero.getHp() + " HP!");
 		String start = "Hero started Journey with "+ fileDescriptor.hero.getHp() + " HP!";
 		writeToFileStringList.add(start);
 	
-		int heroRemainingHp = 0;
-		if(fileDescriptor.hero.getHp() > fileDescriptor.enemyList.get(0).getHp()) {
-			int tempHeroHp = fileDescriptor.hero.getHp();
-			int tempEnemyHp = fileDescriptor.enemyList.get(0).getHp();
-			int tempHeroAttack = fileDescriptor.hero.getAttact();
-			int tempEnemyAttack = fileDescriptor.enemyList.get(0).getAttact();
-			String getClassName =fileDescriptor.enemyList.get(0).getClass().getSimpleName();
-			
-			int tempNumberOfAttack = numberOfAttacksToEnemy(tempEnemyHp, tempHeroHp, tempHeroAttack);
-			heroRemainingHp = tempHeroHp - herosDamage(tempNumberOfAttack, tempEnemyAttack);
-			String str = "Hero defated "+ getClassName + " with " + heroRemainingHp + " HP remaining";
-			writeToFileStringList.add(str);
-			System.out.println(str);
-			isSurvived = true;
-		}
-		else {
-			int tempEnemyHp = fileDescriptor.enemyList.get(0).getHp();
-			int tempHeroAttack = fileDescriptor.hero.getAttact();
-			int tempEnemyAttack = fileDescriptor.enemyList.get(0).getAttact();
-			String getClassName =fileDescriptor.enemyList.get(0).getClass().getSimpleName();
-			int tempNumberOfAttack = attactToWhenPowerThenHero(heroRemainingHp, tempEnemyHp,tempEnemyAttack);
-			
-			int enemyKalanHp = tempEnemyHp -enemysDamage(tempNumberOfAttack, tempHeroAttack);
-			String str = getClassName + " defeated Hero with" + enemyKalanHp +" HP remaining";
-			writeToFileStringList.add(str);
-			System.out.println(str);
-			isSurvived = false;
+		firstMatch(fileDescriptor);
 		
-		}
 		for(int i = 1;i < fileDescriptor.enemyList.size();i++) {
 			
 			if(heroRemainingHp > fileDescriptor.enemyList.get(i).getHp()) {
@@ -127,6 +102,37 @@ public class Journey {
 		}
 		else {
 			return "Hero is Dead!! Last seen at position " + lastPosition + "!!";
+		}
+	}
+	
+	public void firstMatch(FileDescriptor fileDescriptor) {
+		if(fileDescriptor.hero.getHp() > fileDescriptor.enemyList.get(0).getHp()) {
+			int tempHeroHp = fileDescriptor.hero.getHp();
+			int tempEnemyHp = fileDescriptor.enemyList.get(0).getHp();
+			int tempHeroAttack = fileDescriptor.hero.getAttact();
+			int tempEnemyAttack = fileDescriptor.enemyList.get(0).getAttact();
+			String getClassName =fileDescriptor.enemyList.get(0).getClass().getSimpleName();
+			
+			int tempNumberOfAttack = numberOfAttacksToEnemy(tempEnemyHp, tempHeroHp, tempHeroAttack);
+			heroRemainingHp = tempHeroHp - herosDamage(tempNumberOfAttack, tempEnemyAttack);
+			String str = "Hero defated "+ getClassName + " with " + heroRemainingHp + " HP remaining";
+			writeToFileStringList.add(str);
+			System.out.println(str);
+			isSurvived = true;
+		}
+		else {
+			int tempEnemyHp = fileDescriptor.enemyList.get(0).getHp();
+			int tempHeroAttack = fileDescriptor.hero.getAttact();
+			int tempEnemyAttack = fileDescriptor.enemyList.get(0).getAttact();
+			String getClassName =fileDescriptor.enemyList.get(0).getClass().getSimpleName();
+			int tempNumberOfAttack = attactToWhenPowerThenHero(heroRemainingHp, tempEnemyHp,tempEnemyAttack);
+			
+			int enemyKalanHp = tempEnemyHp -enemysDamage(tempNumberOfAttack, tempHeroAttack);
+			String str = getClassName + " defeated Hero with" + enemyKalanHp +" HP remaining";
+			writeToFileStringList.add(str);
+			System.out.println(str);
+			isSurvived = false;
+		
 		}
 	}
 
